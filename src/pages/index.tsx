@@ -6,16 +6,17 @@ import Stripe from "stripe";
 
 import { stripe } from "../lib/stripe";
 import { HomeContainer, Product } from "../styles/pages/home";
+import { formatCurrencyBRL } from "../utils/number-format.util";
 
-interface ProductProps {
+type ProductType = {
   id: string;
   name: string;
   imageUrl: string;
-  price: number;
-}
+  price: string;
+};
 
 interface HomeProps {
-  products: ProductProps[];
+  products: ProductType[];
 }
 
 export default function Home({ products }: HomeProps) {
@@ -39,7 +40,7 @@ export default function Home({ products }: HomeProps) {
             />
             <footer>
               <strong>{product.name}</strong>
-              <span>R$ {product.price}</span>
+              <span>{product.price}</span>
             </footer>
           </Product>
         ))}
@@ -52,13 +53,13 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const response = await stripe.products.list({
     expand: ["data.default_price"],
   });
-  const products: ProductProps[] = response.data.map((productItem) => {
+  const products: ProductType[] = response.data.map((productItem) => {
     const price = productItem.default_price as Stripe.Price;
     return {
       id: productItem.id,
       name: productItem.name,
       imageUrl: productItem.images[0],
-      price: price.unit_amount / 100,
+      price: formatCurrencyBRL(price.unit_amount / 100),
     };
   });
 
