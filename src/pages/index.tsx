@@ -7,6 +7,7 @@ import Stripe from "stripe";
 
 import { stripe } from "../lib/stripe";
 import { HomeContainer, Product } from "../styles/pages/home";
+import { convertHourToSeconds } from "../utils/convert-time.util";
 import { formatCurrencyBRL } from "../utils/number-format.util";
 
 type ProductType = {
@@ -66,11 +67,11 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     };
   });
 
-  const twoHoursInSecond = 60 * 60 * 2;
+  const revalidate = convertHourToSeconds(2);
   return {
     props: {
       products,
     },
-    revalidate: twoHoursInSecond,
+    revalidate: revalidate,
   };
 };
