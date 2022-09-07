@@ -8,3 +8,6 @@
 ## Estrutura Visual
 
 - **[Stitches](https://stitches.dev/)**: Bom para utilizar quando um componente possui muitas variações. `Imagina que tenho um botão. E esse botão pode ter muitas variações. Várias cores, vários tamanhos. Com ícone, sem ícone.`. [SSR Stitches](https://stitches.dev/docs/server-side-rendering)
+- **[Image Optimization](https://nextjs.org/docs/basic-features/image-optimization)**
+- **[next/image](https://nextjs.org/docs/api-reference/next/image)**
+- **[next/future/image](https://nextjs.org/docs/api-reference/next/future/image)**
