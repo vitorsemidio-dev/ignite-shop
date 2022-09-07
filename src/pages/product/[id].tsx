@@ -118,6 +118,6 @@ export const getStaticProps: GetStaticProps<
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [{ params: { id: "prod_MO5Pdc4m3rNLi3" } }],
-    fallback: true,
+    fallback: "blocking",
   };
 };
