@@ -13,7 +13,10 @@
 - **[next/future/image](https://nextjs.org/docs/api-reference/next/future/image)**
 - **[Keen Slider](https://keen-slider.io/)**
 
-## Stripe
+## Integração com Stripe
 
 - **[Stripe](https://dashboard.stripe.com/test/dashboard)**
 - **[Chaves API Stripe](https://dashboard.stripe.com/test/apikeys)**
+- **[Expanding Objects](https://stripe.com/docs/api/expanding_objects)**
+- **[next/image Un-configured Host](https://nextjs.org/docs/messages/next-image-unconfigured-host)**
+- **[Blur Hash](https://blurha.sh/)**
