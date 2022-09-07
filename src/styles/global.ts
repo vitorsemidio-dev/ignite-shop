@@ -20,5 +20,6 @@ export const globalStyles = globalCss({
 
   a: {
     color: "inherit",
+    textDecoration: "none",
   },
 });
