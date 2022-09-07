@@ -1,6 +1,8 @@
+import axios from "axios";
 import { GetStaticPaths, GetStaticProps } from "next";
 import FutureImage from "next/future/image";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import Stripe from "stripe";
 
 import { stripe } from "../../lib/stripe";
@@ -25,9 +27,37 @@ interface ProductItemProps {
 }
 
 export default function ProductItem({ product }: ProductItemProps) {
-  const { isFallback } = useRouter();
-  function handleBuyProduct() {
-    console.log(product.defaultPriceId);
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState<boolean>(false);
+  const router = useRouter();
+
+  async function handleBuyProduct() {
+    try {
+      setIsCreatingCheckoutSession(true);
+      const response = await axios.post("/api/checkout", {
+        priceId: product.defaultPriceId,
+      });
+
+      const { checkoutUrl } = response.data;
+      redirectToRoute(checkoutUrl, { external: true });
+    } catch (err) {
+      console.log(err);
+      console.log("Falha ao redirecionar ao checkout");
+      setIsCreatingCheckoutSession(false);
+    }
+  }
+
+  async function redirectToRoute(
+    url: string,
+    options: { external: boolean },
+  ): Promise<void> {
+    const { external } = options;
+    if (external) {
+      window.location.href = url;
+      return;
+    } else {
+      await router.push(url);
+    }
   }
 
   return (
@@ -43,7 +73,11 @@ export default function ProductItem({ product }: ProductItemProps) {
 
           <p>{product.description}</p>
 
-          <button onClick={handleBuyProduct}>Comprar Agora</button>
+          <button
+            onClick={handleBuyProduct}
+            disabled={isCreatingCheckoutSession}>
+            Comprar Agora
+          </button>
         </ProductDetails>
       </ProductContainer>
     </>
