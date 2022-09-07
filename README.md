@@ -20,5 +20,10 @@
 - **[Expanding Objects](https://stripe.com/docs/api/expanding_objects)**
 - **[next/image Un-configured Host](https://nextjs.org/docs/messages/next-image-unconfigured-host)**
 - **[Blur Hash](https://blurha.sh/)**
+
+## Produto & checkout
+
 - **[Stripe Checkout Sessions](https://stripe.com/docs/api/checkout/sessions)**
 - **[Stripe Testando Cartões](https://stripe.com/docs/testing#cards)**
+- **[Next Blog versão 12.2](https://nextjs.org/blog/next-12-2)**
+- **[Link Behavior](https://github.com/vercel/next.js/pull/36436)**

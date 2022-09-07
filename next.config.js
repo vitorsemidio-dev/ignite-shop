@@ -6,6 +6,7 @@ const nextConfig = {
     images: {
       allowFutureImage: true,
     },
+    newNextLinkBehavior: true,
   },
   images: {
     domains: ['files.stripe.com'],
