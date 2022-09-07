@@ -1,6 +1,7 @@
 import axios from "axios";
 import { GetStaticPaths, GetStaticProps } from "next";
 import FutureImage from "next/future/image";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Stripe from "stripe";
@@ -62,6 +63,10 @@ export default function ProductItem({ product }: ProductItemProps) {
 
   return (
     <>
+      <Head>
+        <title>{product.name} | Ignite Shop</title>
+      </Head>
+
       <ProductContainer>
         <ImageContainer>
           <FutureImage src={product.imageUrl} width={520} height={480} />
