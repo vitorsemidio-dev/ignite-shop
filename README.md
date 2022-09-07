@@ -1,6 +1,6 @@
 # Links
 
-## Fundamentos do React
+## Fundamentos do Next.JS
 
 - [Next.JS](https://nextjs.org/)
 - [Google Fonts - Roboto](https://fonts.google.com/?query=roboto)
@@ -11,3 +11,4 @@
 - **[Image Optimization](https://nextjs.org/docs/basic-features/image-optimization)**
 - **[next/image](https://nextjs.org/docs/api-reference/next/image)**
 - **[next/future/image](https://nextjs.org/docs/api-reference/next/future/image)**
+- **[Keen Slider](https://keen-slider.io/)**
