@@ -1,0 +1,25 @@
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+
+import { NextApiRequest, NextApiResponse } from "next";
+import { stripe } from "../../lib/stripe";
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const priceId = "price_id";
+
+  const successUrl = `${process.env.NEXT_URL}/success`;
+  const cancelsUrl = `${process.env.NEXT_URL}/`;
+
+  const checkoutSession = await stripe.checkout.sessions.create({
+    cancel_url: cancelsUrl,
+    success_url: successUrl,
+    mode: "payment",
+    line_items: [{ price: priceId, quantity: 1 }],
+  });
+
+  return res.status(201).json({
+    checkoutUrl: checkoutSession.url,
+  });
+}

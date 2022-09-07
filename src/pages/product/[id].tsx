@@ -17,6 +17,7 @@ type ProductType = {
   imageUrl: string;
   price: string;
   description: string;
+  defaultPriceId: string;
 };
 
 interface ProductItemProps {
@@ -25,6 +26,9 @@ interface ProductItemProps {
 
 export default function ProductItem({ product }: ProductItemProps) {
   const { isFallback } = useRouter();
+  function handleBuyProduct() {
+    console.log(product.defaultPriceId);
+  }
 
   return (
     <>
@@ -39,7 +43,7 @@ export default function ProductItem({ product }: ProductItemProps) {
 
           <p>{product.description}</p>
 
-          <button>Comprar Agora</button>
+          <button onClick={handleBuyProduct}>Comprar Agora</button>
         </ProductDetails>
       </ProductContainer>
     </>
@@ -67,6 +71,7 @@ export const getStaticProps: GetStaticProps<
     imageUrl: product.images[0],
     price: formatCurrencyBRL(price.unit_amount / 100),
     description: product.description,
+    defaultPriceId: price.id,
   };
 
   return {
