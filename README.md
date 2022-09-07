@@ -12,3 +12,8 @@
 - **[next/image](https://nextjs.org/docs/api-reference/next/image)**
 - **[next/future/image](https://nextjs.org/docs/api-reference/next/future/image)**
 - **[Keen Slider](https://keen-slider.io/)**
+
+## Stripe
+
+- **[Stripe](https://dashboard.stripe.com/test/dashboard)**
+- **[Chaves API Stripe](https://dashboard.stripe.com/test/apikeys)**
