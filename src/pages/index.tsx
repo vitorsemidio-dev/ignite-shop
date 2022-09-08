@@ -2,10 +2,13 @@ import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { GetStaticProps } from "next";
 import FutureImage from "next/future/image";
+import Head from "next/head";
+import Link from "next/link";
 import Stripe from "stripe";
 
 import { stripe } from "../lib/stripe";
 import { HomeContainer, Product } from "../styles/pages/home";
+import { convertHourToSeconds } from "../utils/convert-time.util";
 import { formatCurrencyBRL } from "../utils/number-format.util";
 
 type ProductType = {
@@ -29,20 +32,30 @@ export default function Home({ products }: HomeProps) {
 
   return (
     <>
+      <Head>
+        <title>Home | Ignite Shop</title>
+      </Head>
+
       <HomeContainer ref={sliderRef} className="keen-slider">
         {products.map((product) => (
-          <Product key={product.id} className="keen-slider__slide">
-            <FutureImage
-              src={product.imageUrl}
-              width={520}
-              height={480}
-              alt={product.name}
-            />
-            <footer>
-              <strong>{product.name}</strong>
-              <span>{product.price}</span>
-            </footer>
-          </Product>
+          <Link
+            key={product.id}
+            href={`/product/${product.id}`}
+            passHref
+            prefetch={false}>
+            <Product className="keen-slider__slide">
+              <FutureImage
+                src={product.imageUrl}
+                width={520}
+                height={480}
+                alt={product.name}
+              />
+              <footer>
+                <strong>{product.name}</strong>
+                <span>{product.price}</span>
+              </footer>
+            </Product>
+          </Link>
         ))}
       </HomeContainer>
     </>
@@ -63,11 +76,11 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     };
   });
 
-  const twoHoursInSecond = 60 * 60 * 2;
+  const revalidate = convertHourToSeconds(2);
   return {
     props: {
       products,
     },
-    revalidate: twoHoursInSecond,
+    revalidate: revalidate,
   };
 };

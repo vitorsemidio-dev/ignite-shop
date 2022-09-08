@@ -8,8 +8,8 @@ export const HomeContainer = styled("main", {
   minHeight: 656,
 });
 
-export const Product = styled("a", {
-  background: "linear-gradient(180deg, #1EA483 0%, #7465D4 100%)",
+export const Product = styled("div", {
+  background: "$gradient",
   borderRadius: 8,
   display: "flex",
   justifyContent: "center",
