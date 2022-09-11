@@ -1,13 +1,21 @@
 import "keen-slider/keen-slider.min.css";
+
 import { useKeenSlider } from "keen-slider/react";
 import { GetStaticProps } from "next";
 import FutureImage from "next/future/image";
 import Head from "next/head";
 import Link from "next/link";
+import { useState } from "react";
 import Stripe from "stripe";
 
+import { Arrow } from "../components/Arrow";
 import { stripe } from "../lib/stripe";
-import { HomeContainer, Product } from "../styles/pages/home";
+import {
+  ButtonCart,
+  CarrosselContainer,
+  HomeContainer,
+  Product,
+} from "../styles/pages/home";
 import { convertHourToSeconds } from "../utils/convert-time.util";
 import { formatCurrencyBRL } from "../utils/number-format.util";
 
@@ -23,10 +31,24 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
-  const [sliderRef] = useKeenSlider({
-    slides: {
-      perView: 3,
-      spacing: 48,
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+  const [sliderRef, instanceRef] = useKeenSlider({
+    loop: true,
+    breakpoints: {
+      "(min-width: 800px)": {
+        slides: { perView: 2, spacing: 32 },
+      },
+      "(min-width: 1100px)": {
+        slides: { perView: 2, spacing: 48, origin: "center" },
+      },
+    },
+    slides: { perView: 1, spacing: 16 },
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
+    },
+    created() {
+      setLoaded(true);
     },
   });
 
@@ -36,27 +58,49 @@ export default function Home({ products }: HomeProps) {
         <title>Home | Ignite Shop</title>
       </Head>
 
-      <HomeContainer ref={sliderRef} className="keen-slider">
-        {products.map((product) => (
-          <Link
-            key={product.id}
-            href={`/product/${product.id}`}
-            passHref
-            prefetch={false}>
-            <Product className="keen-slider__slide">
-              <FutureImage
-                src={product.imageUrl}
-                width={520}
-                height={480}
-                alt={product.name}
+      <HomeContainer ref={sliderRef}>
+        <CarrosselContainer className="keen-slider">
+          {products.map((product, index) => (
+            <Link
+              key={product.id}
+              href={`/product/${product.id}`}
+              passHref
+              prefetch={false}
+              className="keen-slider__slide">
+              <Product className={`${currentSlide === index && "active"}`}>
+                <FutureImage
+                  src={product.imageUrl}
+                  width={520}
+                  height={480}
+                  alt={product.name}
+                />
+                <footer>
+                  <div>
+                    <strong>{product.name}</strong>
+                    <span>{product.price}</span>
+                  </div>
+                  <ButtonCart>I</ButtonCart>
+                </footer>
+              </Product>
+            </Link>
+          ))}
+          {loaded && instanceRef.current && (
+            <>
+              <Arrow
+                left
+                onClick={(e) =>
+                  e.stopPropagation() || instanceRef.current?.prev()
+                }
               />
-              <footer>
-                <strong>{product.name}</strong>
-                <span>{product.price}</span>
-              </footer>
-            </Product>
-          </Link>
-        ))}
+
+              <Arrow
+                onClick={(e) =>
+                  e.stopPropagation() || instanceRef.current?.next()
+                }
+              />
+            </>
+          )}
+        </CarrosselContainer>
       </HomeContainer>
     </>
   );

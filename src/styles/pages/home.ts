@@ -1,15 +1,19 @@
 import { styled } from "..";
 
 export const HomeContainer = styled("main", {
-  display: "flex",
   width: "100vw",
-  maxWidth: "calc(100vw - ((100vw - 1180px) / 2))",
-  marginLeft: "auto",
+});
+
+export const CarrosselContainer = styled("div", {
+  display: "flex",
+  width: "100%",
   minHeight: 656,
+  position: "relative",
 });
 
 export const Product = styled("div", {
   background: "$gradient",
+  height: "100%",
   borderRadius: 8,
   display: "flex",
   justifyContent: "center",
@@ -42,21 +46,50 @@ export const Product = styled("div", {
     background: "rgba(32, 32, 36, 0.9)",
     borderRadius: "6px",
 
-    strong: {
-      fontSize: "$lg",
-    },
+    div: {
+      display: "flex",
+      flexDirection: "column",
 
-    span: {
-      fontSize: "$xl",
-      FontWeight: "bold",
-      color: "$green500",
+      strong: {
+        fontSize: "$lg",
+      },
+
+      span: {
+        marginTop: "0.25rem",
+        fontSize: "$xl",
+        fontWeight: "bold",
+        color: "$green500",
+        lineHeight: 1.4,
+      },
     },
   },
 
-  "&:hover": {
+  "&:hover, &.active": {
     footer: {
       transform: "translateY(0)",
       opacity: 1,
     },
+  },
+});
+
+export const ButtonCart = styled("button", {
+  backgroundColor: "$green500",
+  color: "$white",
+  borderRadius: 6,
+  padding: "0.75rem",
+  cursor: "pointer",
+  fontWeight: "bold",
+  fontSize: "$lg",
+  border: 0,
+  width: 56,
+  height: 56,
+
+  "&:not(:disabled):hover": {
+    backgroundColor: "$green300",
+  },
+
+  "&:disabled": {
+    opacity: 0.6,
+    cursor: "not-allowed",
   },
 });
