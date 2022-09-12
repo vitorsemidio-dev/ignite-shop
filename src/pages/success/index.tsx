@@ -2,20 +2,35 @@ import { GetServerSideProps } from "next";
 import ImageFuture from "next/future/image";
 import Head from "next/head";
 import Link from "next/link";
+import { useMemo } from "react";
 import Stripe from "stripe";
 
 import { stripe } from "../../lib/stripe";
-import { ImageContainer, SuccessContainer } from "../../styles/pages/success";
+import { Typograph } from "../../styles/common/TypographStyle";
+import {
+  ImageItemContainer,
+  ImageList,
+  SuccessContainer,
+} from "../../styles/pages/success";
 
 interface SuccessProps {
   customerName: string;
-  product: {
+  products: Array<{
+    id: string;
     name: string;
     imageUrl: string;
-  };
+  }>;
 }
 
-export default function Success({ customerName, product }: SuccessProps) {
+export default function Success({
+  customerName,
+  products: products,
+}: SuccessProps) {
+  const productsBought = useMemo(() => {
+    const tshirtWord = products.length === 1 ? "camiseta" : "camisetas";
+    return `${products.length} ${tshirtWord}`;
+  }, [products]);
+
   return (
     <>
       <Head>
@@ -25,19 +40,23 @@ export default function Success({ customerName, product }: SuccessProps) {
       </Head>
 
       <SuccessContainer>
-        <h1>Compra efetuada!</h1>
-        <ImageContainer>
-          <ImageFuture
-            src={product.imageUrl}
-            alt={product.name}
-            width={120}
-            height={110}
-          />
-        </ImageContainer>
-        <p>
-          Uhuul <strong>{customerName}</strong>, sua compra{" "}
-          <strong>{product.name}</strong> já está a caminho da sua casa.
-        </p>
+        <ImageList>
+          {products.map((product) => (
+            <ImageItemContainer key={product.imageUrl}>
+              <ImageFuture
+                src={product.imageUrl}
+                alt={product.name}
+                width={120}
+                height={110}
+              />
+            </ImageItemContainer>
+          ))}
+        </ImageList>
+        <Typograph as="h1">Compra efetuada!</Typograph>
+        <Typograph as="p">
+          Uhuul <Typograph as="strong">{customerName}</Typograph>, sua compra de{" "}
+          {productsBought} já está a caminho da sua casa.
+        </Typograph>
 
         <Link href="/">Voltar ao catálogo</Link>
       </SuccessContainer>
@@ -65,15 +84,17 @@ export const getServerSideProps: GetServerSideProps<SuccessProps> = async ({
   });
 
   const customerName = session.customer_details.name;
-  const productStripe = session.line_items.data[0].price
-    .product as Stripe.Product;
+  const productStripe = session.line_items.data.map(
+    (item) => item.price.product as Stripe.Product,
+  );
 
   const successProps = {
     customerName,
-    product: {
-      name: productStripe.name,
-      imageUrl: productStripe.images[0],
-    },
+    products: productStripe.map((item) => ({
+      id: item.id,
+      name: item.name,
+      imageUrl: item.images[0],
+    })),
   };
 
   return {

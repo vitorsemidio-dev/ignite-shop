@@ -1,64 +1,28 @@
-import axios from "axios";
 import { GetStaticPaths, GetStaticProps } from "next";
 import FutureImage from "next/future/image";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import Stripe from "stripe";
+import { useShoppingCart } from "use-shopping-cart";
+import { formatCurrencyString, Product } from "use-shopping-cart/core";
 
 import { stripe } from "../../lib/stripe";
+import { ButtonStyle } from "../../styles/common/ButtonStyle";
+import { Typograph } from "../../styles/common/TypographStyle";
 import {
   ImageContainer,
   ProductContainer,
   ProductDetails,
 } from "../../styles/pages/product";
-import { formatCurrencyBRL } from "../../utils/number-format.util";
-
-type ProductType = {
-  id: string;
-  name: string;
-  imageUrl: string;
-  price: string;
-  description: string;
-  defaultPriceId: string;
-};
 
 interface ProductItemProps {
-  product: ProductType;
+  product: Product;
 }
 
 export default function ProductItem({ product }: ProductItemProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState<boolean>(false);
-  const router = useRouter();
+  const { addItem } = useShoppingCart();
 
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true);
-      const response = await axios.post("/api/checkout", {
-        priceId: product.defaultPriceId,
-      });
-
-      const { checkoutUrl } = response.data;
-      redirectToRoute(checkoutUrl, { external: true });
-    } catch (err) {
-      console.log(err);
-      console.log("Falha ao redirecionar ao checkout");
-      setIsCreatingCheckoutSession(false);
-    }
-  }
-
-  async function redirectToRoute(
-    url: string,
-    options: { external: boolean },
-  ): Promise<void> {
-    const { external } = options;
-    if (external) {
-      window.location.href = url;
-      return;
-    } else {
-      await router.push(url);
-    }
+  function handleAddProduct(product: Product) {
+    addItem(product);
   }
 
   return (
@@ -69,20 +33,31 @@ export default function ProductItem({ product }: ProductItemProps) {
 
       <ProductContainer>
         <ImageContainer>
-          <FutureImage src={product.imageUrl} width={520} height={480} />
+          <FutureImage src={product.image} width={520} height={480} />
         </ImageContainer>
 
         <ProductDetails>
-          <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <Typograph as="h1" weigth="bold" size="2xl">
+            {product.name}
+          </Typograph>
 
-          <p>{product.description}</p>
+          <Typograph as="span" size="2xl">
+            {formatCurrencyString({
+              value: product.price,
+              currency: product.currency,
+            })}
+          </Typograph>
 
-          <button
-            onClick={handleBuyProduct}
-            disabled={isCreatingCheckoutSession}>
-            Comprar Agora
-          </button>
+          <Typograph as="p" size="md">
+            {product.description}
+          </Typograph>
+
+          <ButtonStyle
+            onClick={() => handleAddProduct(product)}
+            color="primary"
+            height="lg">
+            Colocar na Sacola
+          </ButtonStyle>
         </ProductDetails>
       </ProductContainer>
     </>
@@ -106,11 +81,14 @@ export const getStaticProps: GetStaticProps<
   const price = product.default_price as Stripe.Price;
   const productProp = {
     id: product.id,
+    price_id: price.id,
     name: product.name,
-    imageUrl: product.images[0],
-    price: formatCurrencyBRL(price.unit_amount / 100),
+    image: product.images[0],
+    price: price.unit_amount,
+    currency: "BRL",
     description: product.description,
-    defaultPriceId: price.id,
+    price_data: price,
+    product_data: product,
   };
 
   return {
