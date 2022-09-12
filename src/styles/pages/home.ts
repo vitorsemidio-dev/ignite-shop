@@ -11,7 +11,7 @@ export const CarrosselContainer = styled("div", {
   position: "relative",
 });
 
-export const Product = styled("div", {
+export const ProductCard = styled("div", {
   background: "$gradient",
   height: "100%",
   borderRadius: 8,
@@ -69,27 +69,5 @@ export const Product = styled("div", {
       transform: "translateY(0)",
       opacity: 1,
     },
-  },
-});
-
-export const ButtonCart = styled("button", {
-  backgroundColor: "$green500",
-  color: "$white",
-  borderRadius: 6,
-  padding: "0.75rem",
-  cursor: "pointer",
-  fontWeight: "bold",
-  fontSize: "$lg",
-  border: 0,
-  width: 56,
-  height: 56,
-
-  "&:not(:disabled):hover": {
-    backgroundColor: "$green300",
-  },
-
-  "&:disabled": {
-    opacity: 0.6,
-    cursor: "not-allowed",
   },
 });

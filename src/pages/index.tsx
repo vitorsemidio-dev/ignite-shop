@@ -1,56 +1,31 @@
 import "keen-slider/keen-slider.min.css";
 
-import { useKeenSlider } from "keen-slider/react";
 import { GetStaticProps } from "next";
 import FutureImage from "next/future/image";
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
+import { Handbag } from "phosphor-react";
 import Stripe from "stripe";
+import { formatCurrencyString, Product } from "use-shopping-cart/core";
 
 import { Arrow } from "../components/Arrow";
+import { useSlider } from "../hooks/useSlider";
 import { stripe } from "../lib/stripe";
+import { ButtonStyle } from "../styles/common/ButtonStyle";
+import { Typograph } from "../styles/common/TypographStyle";
 import {
-  ButtonCart,
   CarrosselContainer,
   HomeContainer,
-  Product,
+  ProductCard,
 } from "../styles/pages/home";
 import { convertHourToSeconds } from "../utils/convert-time.util";
-import { formatCurrencyBRL } from "../utils/number-format.util";
-
-type ProductType = {
-  id: string;
-  name: string;
-  imageUrl: string;
-  price: string;
-};
 
 interface HomeProps {
-  products: ProductType[];
+  products: Product[];
 }
 
 export default function Home({ products }: HomeProps) {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [loaded, setLoaded] = useState(false);
-  const [sliderRef, instanceRef] = useKeenSlider({
-    loop: true,
-    breakpoints: {
-      "(min-width: 800px)": {
-        slides: { perView: 2, spacing: 32 },
-      },
-      "(min-width: 1100px)": {
-        slides: { perView: 2, spacing: 48, origin: "center" },
-      },
-    },
-    slides: { perView: 1, spacing: 16 },
-    slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel);
-    },
-    created() {
-      setLoaded(true);
-    },
-  });
+  const { currentSlide, instanceRef, loaded, sliderRef } = useSlider();
 
   return (
     <>
@@ -58,8 +33,8 @@ export default function Home({ products }: HomeProps) {
         <title>Home | Ignite Shop</title>
       </Head>
 
-      <HomeContainer ref={sliderRef}>
-        <CarrosselContainer className="keen-slider">
+      <HomeContainer>
+        <CarrosselContainer ref={sliderRef} className="keen-slider">
           {products.map((product, index) => (
             <Link
               key={product.id}
@@ -67,21 +42,30 @@ export default function Home({ products }: HomeProps) {
               passHref
               prefetch={false}
               className="keen-slider__slide">
-              <Product className={`${currentSlide === index && "active"}`}>
+              <ProductCard className={`${currentSlide === index && "active"}`}>
                 <FutureImage
-                  src={product.imageUrl}
+                  src={product.image}
                   width={520}
                   height={480}
                   alt={product.name}
                 />
                 <footer>
                   <div>
-                    <strong>{product.name}</strong>
-                    <span>{product.price}</span>
+                    <Typograph as="strong" size="lg">
+                      {product.name}
+                    </Typograph>
+                    <Typograph as="span" size="xl" weigth="bold">
+                      {formatCurrencyString({
+                        value: product.price,
+                        currency: product.currency,
+                      })}
+                    </Typograph>
                   </div>
-                  <ButtonCart>I</ButtonCart>
+                  <ButtonStyle color="primary" height="md">
+                    <Handbag size={32} weight="bold" />
+                  </ButtonStyle>
                 </footer>
-              </Product>
+              </ProductCard>
             </Link>
           ))}
           {loaded && instanceRef.current && (
@@ -110,13 +94,18 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const response = await stripe.products.list({
     expand: ["data.default_price"],
   });
-  const products: ProductType[] = response.data.map((productItem) => {
+  const products: Product[] = response.data.map((productItem) => {
     const price = productItem.default_price as Stripe.Price;
     return {
       id: productItem.id,
+      price_id: price.id,
       name: productItem.name,
-      imageUrl: productItem.images[0],
-      price: formatCurrencyBRL(price.unit_amount / 100),
+      image: productItem.images[0],
+      price: price.unit_amount,
+      currency: "BRL",
+      description: productItem.description,
+      price_data: price,
+      product_data: productItem,
     };
   });
 

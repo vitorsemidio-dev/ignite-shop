@@ -1,20 +1,22 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import { NextApiRequest, NextApiResponse } from "next";
+import Stripe from "stripe";
+import { CartDetails } from "use-shopping-cart/core";
 import { stripe } from "../../lib/stripe";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { priceId } = req.body;
+  const cartDetails = req.body.cartDetails as CartDetails;
+  const lineItems = Object.values(cartDetails).map((cartItem) => ({
+    price: (cartItem.price_data as Stripe.Price).id,
+    quantity: cartItem.quantity,
+  }));
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  if (!priceId) {
-    return res.status(400).json({ error: "priceId is required" });
   }
 
   const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`;
@@ -24,7 +26,7 @@ export default async function handler(
     cancel_url: cancelsUrl,
     success_url: successUrl,
     mode: "payment",
-    line_items: [{ price: priceId, quantity: 1 }],
+    line_items: lineItems,
   });
 
   return res.status(201).json({
