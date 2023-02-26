@@ -6,6 +6,7 @@ import { useShoppingCart } from "use-shopping-cart";
 import { formatCurrencyString, Product } from "use-shopping-cart/core";
 
 import { stripe } from "../../lib/stripe";
+import { useOverlap } from "../../hooks/useOverlap";
 import { ButtonStyle } from "../../styles/common/ButtonStyle";
 import { Typograph } from "../../styles/common/TypographStyle";
 import {
@@ -20,9 +21,11 @@ interface ProductItemProps {
 
 export default function ProductItem({ product }: ProductItemProps) {
   const { addItem } = useShoppingCart();
+  const { open } = useOverlap();
 
   function handleAddProduct(product: Product) {
     addItem(product);
+    open();
   }
 
   return (
@@ -55,7 +58,8 @@ export default function ProductItem({ product }: ProductItemProps) {
           <ButtonStyle
             onClick={() => handleAddProduct(product)}
             color="primary"
-            height="lg">
+            height="lg"
+          >
             Colocar na Sacola
           </ButtonStyle>
         </ProductDetails>
