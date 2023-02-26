@@ -5,11 +5,11 @@
 </h1>
 
 <p align="center">
-  <img src="https://img.shields.io/static/v1?logo=Axios&logoColor=5A29E4&label=Axios&message=Axios&color=5A29E4" alt="Logo Axios cor correta com hex #5A29E4" />
-  <img src="https://img.shields.io/static/v1?logo=Next.js&logoColor=000000&label=Next.js&message=Next.js&color=000000" alt="Logo Next.js cor correta com hex #000000" />
-  <img src="https://img.shields.io/static/v1?logo=React&logoColor=61DAFB&label=React&message=React&color=61DAFB" alt="Logo React cor correta com hex #61DAFB" />
-  <img src="https://img.shields.io/static/v1?logo=Stripe&logoColor=008CDD&label=Stripe&message=Stripe&color=008CDD" alt="Logo Stripe cor correta com hex #008CDD" />
-  <img src="https://img.shields.io/static/v1?logo=TypeScript&logoColor=3178C6&label=TypeScript&message=TypeScript&color=3178C6" alt="Logo TypeScript cor correta com hex #3178C6" />
+  <img src="https://img.shields.io/static/v1?logo=Axios&logoColor=5A29E4&label=Axios&message=Axios&color=5A29E4" alt="Logo Axios" />
+  <img src="https://img.shields.io/static/v1?logo=Next.js&logoColor=000000&label=Next.js&message=Next.js&color=000000" alt="Logo Next.js" />
+  <img src="https://img.shields.io/static/v1?logo=React&logoColor=61DAFB&label=React&message=React&color=61DAFB" alt="Logo React" />
+  <img src="https://img.shields.io/static/v1?logo=Stripe&logoColor=008CDD&label=Stripe&message=Stripe&color=008CDD" alt="Logo Stripe" />
+  <img src="https://img.shields.io/static/v1?logo=TypeScript&logoColor=3178C6&label=TypeScript&message=TypeScript&color=3178C6" alt="Logo TypeScript" />
 </p>
 
 ---
@@ -24,13 +24,15 @@
 
 ## 💻 Projeto
 
-O **Ignite Shop** é um aplicativo de venda de camisas que oferece uma experiência de compra fácil e conveniente. Com uma interface intuitiva e moderna, ele permite aos usuários visualizar os produtos disponíveis em um carrossel de imagens, tornando mais fácil encontrar o que procura.
+O **Ignite Shop** é um site de venda de camisas que oferece uma seleção única de produtos de alta qualidade. Com uma interface moderna e elegante, o site permite que os usuários naveguem pelos produtos disponíveis no formato de carrossel, tornando mais fácil encontrar a camisa perfeita para cada ocasião.
 
-Além disso, o aplicativo permite que os usuários adicionem e removam itens do carrinho de compras com facilidade, garantindo que apenas os itens desejados sejam comprados. E quando estiver pronto para finalizar a compra, o usuário pode pagar com cartão de crédito de forma segura e conveniente, com a garantia de que seus dados são protegidos.
+Os usuários podem adicionar e remover itens do carrinho de compras com facilidade, garantindo que apenas os itens desejados sejam comprados. E quando estiver pronto para finalizar a compra, o usuário pode pagar com cartão de crédito de forma segura e conveniente, com a garantia de que seus dados são protegidos.
 
-Com o **Ignite Shop**, comprar camisas nunca foi tão fácil e divertido. Com uma seleção cuidadosamente selecionada de produtos de alta qualidade e recursos intuitivos, o **Ignite Shop** é o aplicativo perfeito para quem busca praticidade e qualidade em uma experiência de compra de camisas online.
+Com o **Ignite Shop**, os usuários podem encontrar camisas de alta qualidade a preços acessíveis. Com uma ampla variedade de estilos, cores e tamanhos, o site é perfeito para quem busca praticidade e qualidade em uma experiência de compra online.
 
-### 📱 Telas do aplicativo
+O **Ignite Shop** é acessível pelo link [https://emidio-ignite-shop.vercel.app/](https://emidio-ignite-shop.vercel.app/) e é a escolha ideal para quem procura camisas de alta qualidade com preços acessíveis. Não perca a oportunidade de comprar agora e atualizar o seu guarda-roupa com o **Ignite Shop**!
+
+### 🌐 Telas do site
 
 **Página inicial**
 
